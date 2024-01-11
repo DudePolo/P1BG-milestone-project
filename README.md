@@ -1,15 +1,15 @@
 ** Code contributors * Christopher Lis ** 
 
-JS Classes 
+JS Classes:[
 -Walls
 -Player
 -Ghost
--Pellet
+-Pellet]
 
-JS Open Arrays
+JS Open Arrays:[
 -pellets
 -boundaries
--ghosts (contains a prevCollisions array and manipulates a collisions array)
+-ghosts (contains a prevCollisions array and manipulates a collisions array)]
 
 Ghost don't have AI they move at random
 Player moves with WASD keys
