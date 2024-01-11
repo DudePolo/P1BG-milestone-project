@@ -10,7 +10,7 @@ canvas.width = innerWidth
 canvas.height = innerHeight 
 
 // Class for creating boundaries (walls)
-class Boundary {
+class Walls {
     static width = 40
     static height = 40
     constructor({ position }){
@@ -20,7 +20,7 @@ class Boundary {
     }
     
     draw() {
-        // Draw a filled blue rectangle representing a boundary
+        // Draw a filled blue square representing a boundary
         c.fillStyle = 'blue'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
@@ -103,8 +103,8 @@ const boundaries = []
 const ghosts = [
     new Ghost({
         position: {
-            x: Boundary.width * 6 + Boundary.width /2,
-            y: Boundary.height + Boundary.height /2
+            x: Walls.width * 6 + Walls.width /2,
+            y: Walls.height + Walls.height /2
         },
         velocity: {
             x: Ghost.speed,
@@ -114,8 +114,8 @@ const ghosts = [
 ]
 const player = new Player({
     position: {
-        x: Boundary.width + Boundary.width /2,
-        y: Boundary.height + Boundary.height /2
+        x: Walls.width + Walls.width /2,
+        y: Walls.height + Walls.height /2
     },
     velocity: {
         x: 0,
@@ -155,6 +155,14 @@ const map = [
     ['-', '.', '-', '-', '.', '.', '.', '-', '-', '.', '-'],
     ['-', '.', '.', '.', '.', '-', '.', '.', '.', '.', '-'],
     ['-', '.', '-', '.', '-', '-', '-', '.', '-', '.', '-'],
+    ['-', '.', '.', '.', '.', '-', '.', '.', '.', '.', '-'],
+    ['-', '.', '-', '-', '.', '.', '.', '-', '-', '.', '-'],
+    ['-', '.', '.', '.', '.', '-', '.', '.', '.', '.', '-'],
+    ['-', '.', '-', '.', '-', '-', '-', '.', '-', '.', '-'],
+    ['-', '.', '.', '.', '.', '-', '.', '.', '.', '.', '-'],
+    ['-', '.', '-', '-', '.', '.', '.', '-', '-', '.', '-'],
+    ['-', '.', '.', '.', '.', '-', '.', '.', '.', '.', '-'],
+    ['-', '.', '-', '.', '-', '-', '-', '.', '-', '.', '-'],
     ['-', '.', '.', '.', '.', '.', '.', '.', '.', '.', '-'],
     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
 ]
@@ -165,10 +173,10 @@ map.forEach((row, i) => {
     switch (symbol) {
         case '-':
             boundaries.push(
-                new Boundary({
+                new Walls ({
                     position: {
-                        x: Boundary.width * j,
-                        y: Boundary.height * i
+                        x: Walls.width * j,
+                        y: Walls.height * i
                     }
                 })
             )
@@ -177,8 +185,8 @@ map.forEach((row, i) => {
             pellets.push(
                 new Pellet({
                     position: {
-                        x: j * Boundary.width + Boundary.width / 2,
-                        y: i * Boundary.height + Boundary.height /2
+                        x: j * Walls.width + Walls.width / 2,
+                        y: i * Walls.height + Walls.height /2
                     }
                 })
             )
@@ -187,17 +195,17 @@ map.forEach((row, i) => {
    }) 
 })
 
-// Function to check collision between a circle(player) and a rectangle(boundary)
-function circleCollidesWithRectangle({
+// Function to check collision between a circle(player) and a square(boundary)
+function circleCollidesWithSquare({
     circle,
-    rectangle
+    square
 }) 
     {
-    const padding = Boundary.width /2 - circle.radius - 1
-    return(circle.position.y - circle.radius + circle.velocity.y <= rectangle.position.y + rectangle.height + padding &&
-        circle.position.x + circle.radius + circle.velocity.x >= rectangle.position.x - padding &&
-        circle.position.y + circle.radius + circle.velocity.y >= rectangle.position.y - padding &&
-        circle.position.x - circle.radius + circle.velocity.x <= rectangle.position.x + rectangle.width + padding)
+    const padding = Walls.width /2 - circle.radius - 1
+    return(circle.position.y - circle.radius + circle.velocity.y <= square.position.y + square.height + padding &&
+        circle.position.x + circle.radius + circle.velocity.x >= square.position.x - padding &&
+        circle.position.y + circle.radius + circle.velocity.y >= square.position.y - padding &&
+        circle.position.x - circle.radius + circle.velocity.x <= square.position.x + square.width + padding)
 }
 
 let animationId // Variable to store animation frame ID
@@ -217,7 +225,7 @@ function animate() {
         for(let i = 0; i < boundaries.length; i++){
             const boundary = boundaries[i]
             if(
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...player,
                     velocity: {
@@ -225,7 +233,7 @@ function animate() {
                         y: -5
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         ) {
             player.velocity.y = 0
@@ -239,7 +247,7 @@ function animate() {
         for(let i = 0; i < boundaries.length; i++){
             const boundary = boundaries[i]
             if(
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...player,
                     velocity: {
@@ -247,7 +255,7 @@ function animate() {
                         y: 0
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         ) {
             player.velocity.x = 0
@@ -261,7 +269,7 @@ function animate() {
         for(let i = 0; i < boundaries.length; i++){
             const boundary = boundaries[i]
             if(
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...player,
                     velocity: {
@@ -269,7 +277,7 @@ function animate() {
                         y: 5
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         ) {
             player.velocity.y = 0
@@ -283,7 +291,7 @@ function animate() {
         for(let i = 0; i < boundaries.length; i++){
             const boundary = boundaries[i]
             if(
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...player,
                     velocity: {
@@ -291,7 +299,7 @@ function animate() {
                         y: 0
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         ) {
             player.velocity.x = 0
@@ -331,9 +339,9 @@ function animate() {
         // Check for collision between player and boundaries
         // Stop player movement if a collision occurs
         if (
-            circleCollidesWithRectangle({
+            circleCollidesWithSquare({
                 circle: player,
-                rectangle: boundary
+                square: boundary
             })
         )   {
             player.velocity.x = 0
@@ -365,7 +373,7 @@ function animate() {
         boundaries.forEach(boundary => {
             if(
                 !collisions.includes('right') &&
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...ghost,
                     velocity: {
@@ -373,14 +381,14 @@ function animate() {
                         y: 0
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         )   {
             collisions.push('right')
         }
             if(
                 !collisions.includes('left') &&
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...ghost,
                     velocity: {
@@ -388,14 +396,14 @@ function animate() {
                         y: 0
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         )   {
             collisions.push('left')
         }
             if(
                 !collisions.includes('up') &&
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...ghost,
                     velocity: {
@@ -403,14 +411,14 @@ function animate() {
                         y: -ghost.speed
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         )   {
             collisions.push('up')
         }
             if(
                 !collisions.includes('down') &&
-                circleCollidesWithRectangle({
+                circleCollidesWithSquare({
                     circle: {
                     ...ghost,
                     velocity: {
@@ -418,7 +426,7 @@ function animate() {
                         y: ghost.speed
                     }
                 },
-                rectangle: boundary
+                square: boundary
             })
         )   {
             collisions.push('down')
