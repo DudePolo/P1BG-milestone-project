@@ -12,5 +12,7 @@ JS Open Arrays:[
 -ghosts (contains a prevCollisions array and manipulates a collisions array)]
 
 Ghost don't have AI they move at random
+
 Player moves with WASD keys
+
 Player moves at a higher speed than the ghost
